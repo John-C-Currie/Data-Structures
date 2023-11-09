@@ -1,0 +1,49 @@
+7.1
+a.
+Take the first node of LL assuming the LL does not have a last pointer
+    current = first
+    while (current.next.next != null)
+        current = current.next
+    current.next = null
+    return first
+
+c.
+Take the first node of LL and the target index
+    if (index == 0)
+        return first.next
+
+    current = first
+    for (i = 0 to index - 1) 
+        current = current.next
+    current.next = current.next.next
+    return first
+
+e.
+Take the first node of LL and target value
+    current = first
+    while (current != null)
+        if (current.value == value)
+            return true
+        current = current.next
+    return false
+
+7.2
+a.
+Take a the first node of LL and its size
+    currnet = first
+    for(i = 0 to i = size/2)
+        current = current.next
+    return current.value
+
+c.
+Take a LL
+    Create three pointers previous, current and next
+    current = first
+    prev = null
+    next = null
+    while(current.next != null)
+        next = current.next
+        current.next = prev
+        prev = current
+        current = next
+    return prev
