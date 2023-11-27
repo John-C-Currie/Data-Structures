@@ -37,7 +37,6 @@ public class ThreeLetterWords {
         for (int i = 0; i < alphabet.length(); i++) {
             cMap.put(alphabet.charAt(i), i + 1);
         }
-        // YOUR CODE HERE (it's only one line)
     }
 
     // Builds the word-number (number = sum of letter values) map

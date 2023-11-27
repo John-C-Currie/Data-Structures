@@ -29,10 +29,21 @@ public class GraphClient {
                 if (v == w) count++;
         return count/2;
     }
+
+    public static String toString(Graph g){
+        String s = g.V() + " vertices, " + g.E() + " edges\n";
+        for (int v = 0; v < g.V(); v++){
+            s += v + ": ";
+            for (int w : g.adj(v))
+                s += w + " ";
+            s += "\n";
+        }
+        return s;
+    }
     
     public static void main(String[] args) {
         Graph g = new Graph(new In("tinyG.txt"));
-        System.out.println(g);
+        System.out.println(toString(g));
         System.out.println("Max degree: " + maxDegree(g));
         System.out.println("Average degree: " + averageDegree(g));
         System.out.println("Number of self loops: " + numberOfSelfLoops(g));
