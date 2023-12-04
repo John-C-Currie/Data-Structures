@@ -1,49 +1,37 @@
+
 import java.util.*;
 
-public class Dijkstra {
+public class FastDijkstra {
     private DirectedEdge[] edgeTo;
-    private double distTo[];
-    Set<Integer> Q = new HashSet<>(); // vertices not on the shortest path
+    private double[] distTo;
+    private IPQ Q;
 
-    public Dijkstra(WeightedDiGraph G, int source) {
+    public FastDijkstra(WeightedDiGraph G, int source, int maxN) {
         edgeTo = new DirectedEdge[G.V()];
         distTo = new double[G.V()];
+        Q = new IPQ(maxN);
 
-        // initialization
         for (int v = 0; v < G.V(); v++) {
             distTo[v] = Double.POSITIVE_INFINITY;
-            Q.add(v);
+            Q.insert(v, Double.POSITIVE_INFINITY);
         }
         distTo[source] = 0;
+        Q.decreaseKey(source, 0.0);
 
-        // remove u with smallest distTo[u] from Q & relax edges leaving u
         while (!Q.isEmpty()) {
-            int u = closestVertex(Q);
-            Q.remove(u);
+            int u = Q.delMin();
             for (DirectedEdge e : G.adj(u))
                 relax(e);
         }
     }
 
-    // relaxes edge e
     private void relax(DirectedEdge e) {
         int u = e.from(), v = e.to();
         if (distTo[v] > distTo[u] + e.weight()) {
             distTo[v] = distTo[u] + e.weight();
             edgeTo[v] = e;
+            Q.decreaseKey(v, distTo[v]);
         }
-    }
-
-    // finds the vertex u in Q with the smallest distTo[u]
-    private int closestVertex(Set<Integer> Q) {
-        double minDist = Double.POSITIVE_INFINITY;
-        int v = -1;
-        for (int x : Q)
-            if (distTo[x] <= minDist) {
-                minDist = distTo[x];
-                v = x;
-            }
-        return v;
     }
 
     public boolean hasPathTo(int v) {
@@ -57,10 +45,11 @@ public class Dijkstra {
     public Iterable<DirectedEdge> pathTo(int v) {
         if (!hasPathTo(v))
             return null;
-        ArrayDeque<DirectedEdge> path = new ArrayDeque<DirectedEdge>();
+        ArrayDeque<DirectedEdge> path = new ArrayDeque<>();
         for (DirectedEdge e = edgeTo[v]; e != null; e = edgeTo[e.from()]) {
             path.push(e);
         }
         return path;
     }
 }
+
